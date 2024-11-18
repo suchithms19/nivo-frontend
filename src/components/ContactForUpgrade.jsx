@@ -25,7 +25,7 @@ const ContactForUpgrade = ({
             <a href={`tel:${phone}`} className="hover:underline">{phone}</a>
           </div>
         </div>
-        <a href={`mailto:${email}`}><button style={{backgroundColor: "#605BFF"}} className="mt-6 w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <a href={`mailto:${email}`}><button style={{backgroundColor: "#605BFF"}} className="mt-6 w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:scale-105">
           Request Upgrade
         </button></a>
       </div>

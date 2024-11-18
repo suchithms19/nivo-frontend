@@ -50,8 +50,9 @@ const SelfAdd = () => {
     }
     
     try {
-      await axios.post(`${BACKEND_URL}/api/v1/queue/customeradd/${user._id}`, formData);
-      navigate('/thankyou', { state: { userId: user._id } });
+      const response = await axios.post(`${BACKEND_URL}/api/v1/queue/customeradd/${user._id}`, formData);
+      const patientId = response.data.patientId;
+      navigate('/thankyou', { state: { userId: user._id, patientId } });
     } catch (err) {
       console.error('Error adding patient:', err);
       setError('Failed to add patient. Please try again.');

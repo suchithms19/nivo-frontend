@@ -5,9 +5,9 @@ const AllPatientList = () => {
   const { dataall, loadingall, errorall } =getAllPatient();
 
   return (
-    <div className="bg-gray-50 min-h-screen h-max">
+    <div className="bg-gray-100 min-h-screen h-max">
       <div className="max-w-6xl mx-auto overflow-x-auto">
-        <div className="bg-white rounded-lg shadow-sm mb-8">
+        <div className="bg-white rounded-lg shadow-sm mb-8 mt-8">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <div>
@@ -23,7 +23,7 @@ const AllPatientList = () => {
               </div>
             </div>
           </div>
-          <div className="px-6">
+          <div className="px-6 ">
             <div className="my-3 p-4">
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
@@ -43,7 +43,7 @@ const AllPatientList = () => {
                 </div>
               </div>
             </div>
-            <div className="patient-list">
+            <div className="patient-list pb-2">
               {loadingall ? (
                 <PatientListSkeleton count={5} /> 
               ) : (

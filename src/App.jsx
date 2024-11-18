@@ -13,6 +13,7 @@ import LandingPage from './pages/LandingPage';
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
 import SelfAdd from './components/SelfAdd';
 import WaitlistConfirmation from './pages/WaitlistConfirmation';
+import ViewWaitlist from './pages/ViewWaitlist';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/selfadd/:businessName" element={<SelfAdd />} />
           <Route path="/thankyou" element={<WaitlistConfirmation />} />
+          <Route path="/view-waitlist/:userId" element={<ViewWaitlist/>} />
 
           {/* Protected routes */}
           <Route 
@@ -96,5 +98,6 @@ function App() {
     </>
   );
 }
+
 
 export default App;

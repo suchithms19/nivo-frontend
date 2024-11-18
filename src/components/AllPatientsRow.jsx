@@ -17,7 +17,13 @@ const AllPatientRow = ({ patient }) => {
           <div className="text-sm"><TimestampFormatter isoTimestamp={patient.entryTime} /></div>
         </div>
         <div className="flex-1 min-w-0 ">
-          <div className="text-sm "><TimeDifference entryTime={patient.entryTime} exitTime={patient.postConsultation}/></div>
+          <div className="text-sm ">
+            {patient.canceled ? (
+              <span className="text-red-500">Canceled</span>
+            ) : (
+              <TimeDifference entryTime={patient.entryTime} exitTime={patient.postConsultation}/>
+            )}
+          </div>
         </div>
       </div>
     </div>

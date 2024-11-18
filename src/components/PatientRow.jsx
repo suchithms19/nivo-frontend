@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import BACKEND_URL from '../config';
 import RealTimeWaitTime from './RealTime';
-import { Bell, MoreVertical, Check, MessageSquare, Trash2, Edit } from 'lucide-react';
+import { Bell, Check, Trash2 } from 'lucide-react';
 
 const PatientRow = ({ patient, section }) => {
-  
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const changeWaittoServe = async () => {
     const token = localStorage.getItem('token');
     
     try {
       await axios.put(
         `${BACKEND_URL}/api/v1/queue/patient/${patient._id}/serve`,
-        {}, // No body, so send an empty object
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`, 
@@ -31,7 +32,7 @@ const PatientRow = ({ patient, section }) => {
     try {
       await axios.put(
         `${BACKEND_URL}/api/v1/queue/patient/${patient._id}/complete`,
-        {}, // No body, so send an empty object
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`, 
@@ -44,8 +45,27 @@ const PatientRow = ({ patient, section }) => {
     }
   };
 
+  const cancelPatient = async () => {
+    const token = localStorage.getItem('token');
+    
+    try {
+      await axios.put(
+        `${BACKEND_URL}/api/v1/queue/patient/${patient._id}/cancelled`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );
+      console.log('Patient marked as canceled');
+    } catch (error) {
+      console.error('Error canceling patient:', error);
+    }
+  };
+
   return (
-    <div className="my-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 cursor-pointer transform hover:-translate-y-0.5">
+    <div className="my-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 cursor-pointer transform ">
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
           <div className="text-sm font-medium text-gray-900 capitalize">{patient.name}</div>
@@ -55,33 +75,52 @@ const PatientRow = ({ patient, section }) => {
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-sm">
-          {section === 'waitlist' ?<RealTimeWaitTime entryTime={patient.entryTime}/>:<RealTimeWaitTime entryTime={patient.postConsultation}/>}
+            {section === 'waitlist' ? <RealTimeWaitTime entryTime={patient.entryTime} /> : <RealTimeWaitTime entryTime={patient.postConsultation} />}
           </div>
         </div>
         <div className="flex items-center gap-2">
           <button 
-            onClick={section === 'waitlist' ? changeWaittoServe: changeServetoComplete }
+            onClick={section === 'waitlist' ? changeWaittoServe : changeServetoComplete}
             className="p-2 rounded-full hover:bg-green-100 transition-colors duration-200"
           >
-            <svg 
-              className="w-5 h-5 text-green-500 " 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+            <Check className="w-5 h-5 text-green-500" />
           </button>
           <button className="p-2 rounded-full text-yellow-500 hover:bg-yellow-100">
-          <Bell size={19} />
+            <Bell size={19} />
           </button>
+          {section === 'waitlist' && (
+            <button 
+              onClick={() => setShowConfirm(true)}
+              className="p-2 rounded-full text-red-500 hover:bg-red-100"
+            >
+              <Trash2 size={19} />
+            </button>
+          )}
         </div>
       </div>
+
+      {showConfirm && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <p className="mb-4">Are you sure you want to cancel this patient?</p>
+            <button
+              onClick={() => {
+                cancelPatient();
+                setShowConfirm(false);
+              }}
+              className="bg-red-500 text-white py-2 px-4 rounded-lg mr-2 hover:scale-105"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => setShowConfirm(false)}
+              className="bg-gray-300 text-gray-900 py-2 px-4 rounded-lg hover:scale-105"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

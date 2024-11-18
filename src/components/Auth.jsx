@@ -52,7 +52,7 @@ export function Auth({endpoint}) {
                             <LabelledInput 
                                 label={"Business Name"} 
                                 type={"text"} 
-                                placeholder={"Enter your business name"} 
+                                placeholder={"Sharon's Restaurant"} 
                                 onChange={(e) => {
                                     setpostInputs({
                                         ...postInputs,

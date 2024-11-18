@@ -22,7 +22,7 @@ export function Sidebar(){
         <ButtonSide label="Customers"  route="/customers" />
         {/* <ButtonSide label="Analytics" route="/analytics" /> */}
         <ButtonSide label="Upgrade"  route="/upgrade" />
-        {/* <ButtonSide label="Settings"  route="/settings" /> */}
+        <ButtonSide label="Settings"  route="/settings" />
       </div>
     </div>
     <div className="flex justify-between items-center ">

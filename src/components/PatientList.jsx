@@ -13,7 +13,7 @@ const PatientList = () => {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen h-max">
+    <div className="bg-gray-100 min-h-screen h-max">
       <div className="max-w-7xl mx-auto overflow-x-auto">
         <div className="flex gap-4">
           {/* Waitlist Section */}
@@ -29,12 +29,12 @@ const PatientList = () => {
                       </svg>
                       {data.length} persons
                     </span>
-                    <span className="flex items-center">
+                    {/* <span className="flex items-center">
                       <svg className="w-4 h-4 mr-1" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                         <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       Est. 30min
-                    </span>
+                    </span> */}
                   </div>
                 </div>
                 <button onClick={onClick} style={{ backgroundColor: "#605BFF"}} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:scale-105 transition duration-150 ease-in-out">
@@ -88,7 +88,7 @@ const PatientList = () => {
                     <div className="text-xs font-medium text-gray-500">&nbsp;PHONE</div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-500">&nbsp; &nbsp;SERVED TIME</div>
+                    <div className="text-xs font-medium text-gray-500">&nbsp; &nbsp;SERVING TIME</div>
                   </div>
                   <div className="w-24"></div>
                 </div>

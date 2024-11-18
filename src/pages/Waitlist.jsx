@@ -10,7 +10,7 @@ export function Waitlist() {
       </div>
 
       {/* Main content area, with enough margin for the sidebar */}
-      <div className="w-5/6 ml-[16.66%] p-4 py-10 bg-gray-50">
+      <div className="w-5/6 ml-[16.66%] p-4 py-10 bg-gray-100">
         <PatientList />
       </div>
     </div>

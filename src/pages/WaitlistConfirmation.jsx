@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Check, Clock, Phone } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { Check } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BACKEND_URL from '../config';
 
 const WaitlistConfirmation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [queueStatus, setQueueStatus] = useState(null);
   const [doctorName, setDoctorName] = useState('');
+  const [showConfirm, setShowConfirm] = useState(false);
+  const patientId = location.state?.patientId;
   const userId = location.state?.userId;
 
   useEffect(() => {
@@ -20,7 +23,7 @@ const WaitlistConfirmation = () => {
           ]);
           
           setQueueStatus(statusResponse.data);
-          setDoctorName(userResponse.data.businessName)
+          setDoctorName(userResponse.data.businessName);
         } catch (err) {
           console.error('Error fetching queue status:', err);
         }
@@ -29,58 +32,89 @@ const WaitlistConfirmation = () => {
     fetchQueueStatus();
   }, [userId]);
 
+  const handleViewWaitlist = () => {
+    navigate(`/view-waitlist/${userId}`);
+  };
+
+  const handleExitWaitlist = () => {
+    setShowConfirm(true);
+  };
+
+  const confirmExit = async () => {
+    try {
+      if (patientId) {
+        await axios.delete(`${BACKEND_URL}/api/v1/queue/patientremove/${patientId}/${userId}`);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Error exiting waitlist:', error);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="mb-6 flex items-center">
-        <h1 className="ml-2 text-xl font-semibold text-gray-900">Waitlist Status</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <div className="mb-6 flex items-center">
+          <h1 className="ml-2 text-xl font-semibold text-gray-900">Waitlist Status</h1>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className='flex items-center justify-center'> 
+            <span className="font-semibold text-xl text-gray-900 text-center capitalize">{doctorName}</span>
+          </div>
+          <div className="flex items-center justify-center my-4">
+            <div className="bg-green-100 rounded-full p-2">
+              <Check className="w-8 h-8 text-green-600" />
+            </div>
+          </div>
+          <h2 className="text-center text-xl font-semibold text-gray-600 mb-2">
+            You're on the waitlist!
+          </h2>
+         
+          {queueStatus && (
+            <div className="bg-gray-50 rounded-lg p-4 mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-gray-600">Customers waiting</span>
+                <span className="font-semibold text-gray-900">{queueStatus.waitingCount}</span>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={handleViewWaitlist}
+            className="mt-4 w-full bg-cuspurple text-white py-2 rounded-lg shadow-md hover:scale-105"
+          >
+            View Waitlist
+          </button>
+
+          <button
+            onClick={handleExitWaitlist}
+            className="mt-4 w-full bg-red-500 text-white py-2 rounded-lg shadow-md hover:scale-105"
+          >
+            Exit Waitlist
+          </button>
+        </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <div className='flex items-center justify-center'> 
-        <span className="font-semibold  text-xl text-gray-900 text-center capitalize">{doctorName}</span>
-        </div>
-        <div className="flex items-center justify-center my-4">
-          
-          <div className="bg-green-100 rounded-full p-2">
-            <Check className="w-8 h-8 text-green-600" />
+      {showConfirm && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <p className="mb-4">Are you sure you want to exit the waitlist?</p>
+            <button
+              onClick={confirmExit}
+              className="bg-red-500 text-white py-2 px-4 rounded-lg mr-2 hover:scale-105"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => setShowConfirm(false)}
+              className="bg-gray-300 text-gray-900 py-2 px-4 rounded-lg hover:scale-105"
+            >
+              No
+            </button>
           </div>
         </div>
-        <h2 className="text-center text-xl font-semibold text-gray-600 mb-2">
-          You're on the waitlist!
-        </h2>
-       
-        
-        {queueStatus && (
-          <div className="bg-gray-50 rounded-lg p-4 mb-4">
-          
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-gray-600">Customers waiting</span>
-              <span className="font-semibold text-gray-900">{queueStatus.waitingCount}</span>
-            </div>
-          </div>
-        )}
-
-        <div className="space-y-4">
-          <div className="flex items-start">
-            <Phone className="w-5 h-5 text-indigo-600 mt-1 mr-3" />
-            <div>
-              <h3 className="font-medium text-gray-900">We'll call you</h3>
-              <p className="text-gray-600 text-sm">
-                When it's almost your turn, we'll call
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start">
-            <Clock className="w-5 h-5 text-indigo-600 mt-1 mr-3" />
-            <div>
-              <h3 className="font-medium text-gray-900">Arrive on time</h3>
-              <p className="text-gray-600 text-sm">
-                Please arrive within 10 minutes of our call to keep your spot
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
