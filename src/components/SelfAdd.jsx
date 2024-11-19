@@ -60,7 +60,7 @@ const SelfAdd = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96 relative">
         <div className="flex flex-col justify-center items-center mb-4">
           <h2 className="text-2xl font-bold text-center">
@@ -76,13 +76,16 @@ const SelfAdd = () => {
             <InputField label="Age" name="age" value={formData.age} onChange={handleChange} type="number" />   
             <button
               type="submit"
-              className="w-full bg-cuspurple text-white py-2 px-4 rounded-md hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="w-full bg-cuspurple text-white py-2 px-4 rounded-md hover:scale-105"
             >
               Join Waitlist
             </button>
           </form>
         )}
       </div>
+      <footer className="mt-4 text-center text-gray-600">
+        Powered by <a href="https://getnivo.tech" target="_blank" rel="noopener noreferrer" className="text-cuspurple">Nivo</a>
+      </footer>
     </div>
   );
 };

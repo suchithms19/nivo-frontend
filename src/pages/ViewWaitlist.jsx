@@ -28,7 +28,7 @@ const ViewWaitlist = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-xl font-semibold text-gray-900">Waitlist</h1>
@@ -61,6 +61,9 @@ const ViewWaitlist = () => {
           )}
         </div>
       </div>
+      <footer className="mt-4 text-center text-gray-600">
+        Powered by <a href="https://getnivo.tech" target="_blank" rel="noopener noreferrer" className="text-cuspurple">Nivo</a>
+      </footer>
     </div>
   );
 };
