@@ -1,36 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Check } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useQueueStatus } from '../hooks';
 import axios from 'axios';
 import BACKEND_URL from '../config';
+import { useEffect } from 'react';
 
 const WaitlistConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [queueStatus, setQueueStatus] = useState(null);
-  const [doctorName, setDoctorName] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
+  const [doctorName, setDoctorName] = useState('');
   const patientId = location.state?.patientId;
   const userId = location.state?.userId;
-
-  useEffect(() => {
-    const fetchQueueStatus = async () => {
-      if (userId) {
-        try {
-          const [statusResponse, userResponse] = await Promise.all([
-            axios.get(`${BACKEND_URL}/api/v1/user/queue-status/${userId}`),
-            axios.get(`${BACKEND_URL}/api/v1/user/businessName/${userId}`)
-          ]);
-          
-          setQueueStatus(statusResponse.data);
-          setDoctorName(userResponse.data.businessName);
-        } catch (err) {
-          console.error('Error fetching queue status:', err);
-        }
-      }
-    };
-    fetchQueueStatus();
-  }, [userId]);
+  const { queueStatus, loading, error } = useQueueStatus(userId);
 
   const handleViewWaitlist = () => {
     navigate(`/view-waitlist/${userId}`);
@@ -51,6 +34,19 @@ const WaitlistConfirmation = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchDoctorName = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/user/businessName/${userId}`);
+        setDoctorName(response.data.businessName);
+      } catch (err) {
+        console.error('Error fetching doctor name:', err);
+      }
+    };
+
+    fetchDoctorName();
+  }, [userId]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
@@ -59,25 +55,33 @@ const WaitlistConfirmation = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className='flex items-center justify-center'> 
-            <span className="font-semibold text-xl text-gray-900 text-center capitalize">{doctorName}</span>
-          </div>
-          <div className="flex items-center justify-center my-4">
-            <div className="bg-green-100 rounded-full p-2">
-              <Check className="w-8 h-8 text-green-600" />
-            </div>
-          </div>
-          <h2 className="text-center text-xl font-semibold text-gray-600 mb-2">
-            You're on the waitlist!
-          </h2>
-         
-          {queueStatus && (
-            <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-600">Customers waiting</span>
-                <span className="font-semibold text-gray-900">{queueStatus.waitingCount}</span>
+          {loading ? (
+            <p className="text-center text-gray-600">Loading...</p>
+          ) : error ? (
+            <p className="text-center text-red-600">Error fetching queue status.</p>
+          ) : (
+            <>
+              <div className="flex items-center justify-center my-4">
+                <span className="font-semibold text-xl text-gray-900 text-center capitalize">{doctorName}</span>
               </div>
-            </div>
+              <div className="flex items-center justify-center my-4">
+                <div className="bg-green-100 rounded-full p-2">
+                  <Check className="w-8 h-8 text-green-600" />
+                </div>
+              </div>
+              <h2 className="text-center text-xl font-semibold text-gray-600 mb-2">
+                You're on the waitlist!
+              </h2>
+             
+              {queueStatus && (
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">Customers waiting</span>
+                    <span className="font-semibold text-gray-900">{queueStatus.waitingCount}</span>
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           <button

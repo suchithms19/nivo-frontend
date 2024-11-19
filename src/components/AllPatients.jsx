@@ -2,7 +2,7 @@ import AllPatientRow from './AllPatientsRow';
 import { getAllPatient } from '../hooks';
 
 const AllPatientList = () => {
-  const { dataall, loadingall, errorall } =getAllPatient();
+  const { dataall, loadingall, errorall } = getAllPatient();
 
   return (
     <div className="bg-gray-100 min-h-screen h-max">
@@ -17,13 +17,13 @@ const AllPatientList = () => {
                     <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                     </svg>
-                    {dataall.length} persons
+                    {loadingall ? 'Loading...'  : `${dataall.length} persons`}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="px-6 ">
+          <div className="px-6">
             <div className="my-3 p-4">
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
@@ -45,7 +45,7 @@ const AllPatientList = () => {
             </div>
             <div className="patient-list pb-2">
               {loadingall ? (
-                <PatientListSkeleton count={5} /> 
+                <p className="text-center text-gray-600">Loading...</p>
               ) : (
                 dataall.map((item) => (
                   <AllPatientRow key={item._id} patient={item.patient} section="waitlist" />

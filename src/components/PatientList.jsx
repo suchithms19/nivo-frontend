@@ -27,14 +27,8 @@ const PatientList = () => {
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                       </svg>
-                      {data.length} persons
+                      {loading ? 'Loading...'  : `${data.length} persons`}
                     </span>
-                    {/* <span className="flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Est. 30min
-                    </span> */}
                   </div>
                 </div>
                 <button onClick={onClick} style={{ backgroundColor: "#605BFF"}} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:scale-105 transition duration-150 ease-in-out">
@@ -58,9 +52,13 @@ const PatientList = () => {
                   <div className="w-24"></div>
                 </div>
               </div>
-              {data.map((item) => (
-                <PatientRow key={item._id} patient={item.patient} section="waitlist" />
-              ))}
+              {loading ? (
+                <p className="text-center text-gray-600">Loading...</p>
+              )  : (
+                data.map((item) => (
+                  <PatientRow key={item._id} patient={item.patient} section="waitlist" />
+                ))
+              )}
             </div>
           </div>
 
@@ -73,7 +71,7 @@ const PatientList = () => {
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                   </svg>
-                  {datas.length} persons
+                  {loadings ? 'Loading...'  : `${datas.length} persons`}
                 </span>
               </div>
             </div>
@@ -93,9 +91,13 @@ const PatientList = () => {
                   <div className="w-24"></div>
                 </div>
               </div>
-              {datas.map((item) => (
-                <PatientRow key={item._id} patient={item.patient} section="serving" />
-              ))}
+              {loadings ? (
+                <p className="text-center text-gray-600">Loading...</p>
+              ) : (
+                datas.map((item) => (
+                  <PatientRow key={item._id} patient={item.patient} section="serving" />
+                ))
+              )}
             </div>
           </div>
         </div>

@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useWaitlist } from '../hooks';
 import axios from 'axios';
 import BACKEND_URL from '../config';
 
 const ViewWaitlist = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [waitlist, setWaitlist] = useState([]);
+  const { waitlist, loading, error } = useWaitlist(userId);
+  const [doctorName, setDoctorName] = useState('');
 
   useEffect(() => {
-    const fetchWaitlist = async () => {
+    const fetchDoctorName = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/queue/public-waitlist/${userId}`);
-        setWaitlist(response.data);
-      } catch (error) {
-        console.error('Error fetching waitlist:', error);
+        const response = await axios.get(`${BACKEND_URL}/api/v1/user/businessName/${userId}`);
+        setDoctorName(response.data.businessName);
+      } catch (err) {
+        console.error('Error fetching doctor name:', err);
       }
     };
 
-    fetchWaitlist();
+    fetchDoctorName();
   }, [userId]);
 
   const handleBack = () => {
@@ -38,7 +40,14 @@ const ViewWaitlist = () => {
           </button>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6">
-          {waitlist.length > 0 ? (
+          <div className='flex items-center justify-center mb-4'> 
+            <span className="font-semibold text-xl text-gray-900 text-center capitalize">{doctorName}</span>
+          </div>
+          {loading ? (
+            <p className="text-center text-gray-600">Loading...</p>
+          ) : error ? (
+            <p className="text-center text-red-600">Error fetching waitlist.</p>
+          ) : waitlist.length > 0 ? (
             <ul className="divide-y divide-gray-200">
               {waitlist.map((entry, index) => (
                 <li key={entry._id} className="py-4 flex items-center justify-between">

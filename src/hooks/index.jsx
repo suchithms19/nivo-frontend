@@ -46,7 +46,7 @@ const getServelist = () => {
           const response = await axios.get(`${BACKEND_URL}/api/v1/queue/serving`,
             {
               headers: {
-                Authorization: `Bearer ${token}` // Add the token to Authorization header
+                Authorization: `Bearer ${token}` 
               }
             });
           setData(response.data);
@@ -63,35 +63,81 @@ const getServelist = () => {
     return { datas, loadings, errors };
   };
 
-const getAllPatient = () => {
+  const getAllPatient = () => {
     const token = localStorage.getItem('token');
-    const [dataall, setData] = useState([]);
-    const [loadingsall, setLoading] = useState(true);
-    const [errorsall, setError] = useState(null);
-  
+    const [dataall, setDataAll] = useState([]);
+    const [loadingall, setLoadingAll] = useState(true);
+    const [errorall, setErrorAll] = useState(null);
+
     useEffect(() => {
       const fetchData = async () => {
         try {
-          setLoading(true);
-          const response = await axios.get(`${BACKEND_URL}/api/v1/queue/allpatient`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}` // Add the token to Authorization header
-              }
-            });
-          setData(response.data);
+          const response = await axios.get(`${BACKEND_URL}/api/v1/queue/allpatient`,{
+            headers: {
+              Authorization: `Bearer ${token}` 
+            }
+          });
+          setDataAll(response.data);
+        } catch (error) {
+          setErrorAll(error);
+        } finally {
+          setLoadingAll(false);
+        }
+      };
+
+      fetchData();
+    }, []);
+
+    return { dataall, loadingall, errorall };
+  };
+
+
+
+const useWaitlist = (userId) => {
+  const [waitlist, setWaitlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchWaitlist = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/queue/public-waitlist/${userId}`);
+        setWaitlist(response.data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWaitlist();
+  }, [userId]);
+
+  return { waitlist, loading, error };
+};
+
+const useQueueStatus = (userId) => {
+  const [queueStatus, setQueueStatus] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchQueueStatus = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/v1/user/queue-status/${userId}`);
+          setQueueStatus(response.data);
         } catch (err) {
-          setError(err.message);
+          setError(err);
         } finally {
           setLoading(false);
         }
-      };
-  
-      fetchData();
-    }, []); 
-  
-    return { dataall, loadingsall, errorsall };
-  };
+      }
+    };
+    fetchQueueStatus();
+  }, [userId]);
 
-  
-export {getServelist,getWaitlist,getAllPatient};
+  return { queueStatus, loading, error };
+};
+
+export {getServelist,getWaitlist,getAllPatient,useWaitlist,useQueueStatus};

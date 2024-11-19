@@ -33,12 +33,14 @@ const UserInfo = () => {
     });
   };
 
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
+  
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="loader"></div>
+      </div>
+    );
   }
 
   const businessUrl = `getnivo.tech/selfadd/${user.businessNameForUrl}`;
