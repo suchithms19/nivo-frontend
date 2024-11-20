@@ -6,6 +6,7 @@ import { Bell, Check, Trash2 } from 'lucide-react';
 
 const PatientRow = ({ patient, section }) => {
   const [showConfirm, setShowConfirm] = useState(false);
+ 
 
   const changeWaittoServe = async () => {
     const token = localStorage.getItem('token');
@@ -20,6 +21,7 @@ const PatientRow = ({ patient, section }) => {
           },
         }
       );
+      window.location.reload() //to reload page
       console.log('Status changed to Serve');
     } catch (error) {
       console.error('Error changing status to Serve:', error);
@@ -39,6 +41,7 @@ const PatientRow = ({ patient, section }) => {
           },
         }
       );
+      window.location.reload()
       console.log('Status changed to Complete');
     } catch (error) {
       console.error('Error changing status to Complete:', error);
@@ -58,6 +61,7 @@ const PatientRow = ({ patient, section }) => {
           },
         }
       );
+      window.location.reload() //to reload page
       console.log('Patient marked as canceled');
     } catch (error) {
       console.error('Error canceling patient:', error);
@@ -68,7 +72,9 @@ const PatientRow = ({ patient, section }) => {
     <div className="my-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 cursor-pointer transform ">
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium text-gray-900 capitalize">{patient.name}</div>
+          <div className="text-sm font-medium text-gray-900 capitalize">
+            {patient.name} {patient.selfRegistered && <span className="text-xs text-cuspurple">(Self-Reg)</span>}
+          </div>
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-sm ">+91 {patient.phoneNumber}</div>

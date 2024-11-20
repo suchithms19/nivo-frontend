@@ -38,7 +38,7 @@ export function Auth({endpoint}) {
                             <img className="h-16" src={logo} alt="Logo of Nivo company"/>
                         </div>
                         <div className="text-center text-lg font-semibold pb-10">{endpoint === "signup" ? "Sign up" : "Log in" }</div>
-                        <LabelledInput label={"Email"} type={"email"}placeholder={"sharon19@gmail.com"} onChange={(e) => {
+                        <LabelledInput label={"Email"} type={"email"} placeholder={"sharon19@gmail.com"} onChange={(e) => {
                         setpostInputs({
                             ...postInputs,
                             email: e.target.value

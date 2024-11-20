@@ -54,6 +54,10 @@ const WaitlistConfirmation = () => {
           <h1 className="ml-2 text-xl font-semibold text-gray-900">Waitlist Status</h1>
         </div>
 
+        <div className="mb-4 p-2 bg-yellow-100 text-yellow-800 rounded-lg text-center">
+          Please do not exit this page to keep track of the real-time waitlist status.
+        </div>
+
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           {loading ? (
             <p className="text-center text-gray-600">Loading...</p>

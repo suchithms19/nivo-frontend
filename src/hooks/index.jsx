@@ -27,6 +27,9 @@ const getWaitlist = () => {
     };
 
     fetchData();
+    const interval = setInterval(fetchData, 30000); // Fetch every 30 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []); 
 
   return { data, loading, error };
@@ -111,6 +114,9 @@ const useWaitlist = (userId) => {
     };
 
     fetchWaitlist();
+    const interval = setInterval(fetchWaitlist, 30000); // Fetch every 30 secs
+
+    return () => clearInterval(interval); // Cleanup on unmount
   }, [userId]);
 
   return { waitlist, loading, error };
@@ -134,7 +140,11 @@ const useQueueStatus = (userId) => {
         }
       }
     };
+
     fetchQueueStatus();
+    const interval = setInterval(fetchQueueStatus, 60000); // Fetch every 1 minute
+
+    return () => clearInterval(interval); // Cleanup on unmount
   }, [userId]);
 
   return { queueStatus, loading, error };

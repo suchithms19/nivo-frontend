@@ -5,7 +5,9 @@ const AllPatientRow = ({ patient }) => {
     <div className="my-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 cursor-pointer transform hover:-translate-y-0.5 ">
       <div className="flex items-center justify-between ">
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium text-gray-900 capitalize">{patient.name}</div>
+          <div className="text-sm font-medium text-gray-900 capitalize">
+            {patient.name} {patient.selfRegistered && <span className="text-xs text-cuspurple">(Self-Reg)</span>}
+          </div>
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-sm">+91 {patient.phoneNumber}</div>
@@ -19,7 +21,7 @@ const AllPatientRow = ({ patient }) => {
         <div className="flex-1 min-w-0 ">
           <div className="text-sm ">
             {patient.canceled ? (
-              <span className="text-red-500">Canceled</span>
+              <span className="text-red-500">Canceled {patient.selfCanceled && <span className="text-xs text-red-500">(Self-Can)</span>} </span>
             ) : (
               <TimeDifference entryTime={patient.entryTime} exitTime={patient.postConsultation}/>
             )}
