@@ -27,7 +27,7 @@ const PatientList = () => {
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                       </svg>
-                      {loading ? 'Loading...'  : `${data.length} persons`}
+                      {`${data.length} persons`}
                     </span>
                   </div>
                 </div>
@@ -52,9 +52,7 @@ const PatientList = () => {
                   <div className="w-24"></div>
                 </div>
               </div>
-              {loading ? (
-                <p className="text-center text-gray-600">Loading...</p>
-              )  : (
+              { (
                 data.map((item) => (
                   <PatientRow key={item._id} patient={item.patient} section="waitlist" />
                 ))
@@ -71,7 +69,7 @@ const PatientList = () => {
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                   </svg>
-                  {loadings ? 'Loading...'  : `${datas.length} persons`}
+                  { `${datas.length} persons`}
                 </span>
               </div>
             </div>
@@ -91,9 +89,7 @@ const PatientList = () => {
                   <div className="w-24"></div>
                 </div>
               </div>
-              {loadings ? (
-                <p className="text-center text-gray-600">Loading...</p>
-              ) : (
+              { (
                 datas.map((item) => (
                   <PatientRow key={item._id} patient={item.patient} section="serving" />
                 ))

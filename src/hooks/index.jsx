@@ -27,7 +27,7 @@ const getWaitlist = () => {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 30000); // Fetch every 30 seconds
+    const interval = setInterval(fetchData, 15000); // Fetch every 15 seconds
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []); 
