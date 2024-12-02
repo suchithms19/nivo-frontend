@@ -99,7 +99,7 @@ const PatientRow = ({ patient, section }) => {
             </button>
             <button 
               className="p-1.5 rounded-full text-yellow-500 hover:bg-yellow-100"
-              title="Notify Patient"
+              title="Notify Customer"
             >
               <Bell className="w-4 h-4" />
             </button>
@@ -107,7 +107,7 @@ const PatientRow = ({ patient, section }) => {
               <button 
                 onClick={() => setShowConfirm(true)}
                 className="p-1.5 rounded-full text-red-500 hover:bg-red-100"
-                title="Cancel Patient"
+                title="Delete Customer"
               >
                 <Trash2 className="w-4 h-4" />
               </button>

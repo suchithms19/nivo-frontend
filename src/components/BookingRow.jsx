@@ -29,13 +29,13 @@ const BookingRow = ({ booking }) => {
           <div className="flex items-center gap-1.5">
             <button 
               className="p-1.5 rounded-full hover:bg-green-100 transition-colors duration-200"
-              title="Mark as Arrived"
+              title="Add to Waitlist"
             >
               <Check className="w-4 h-4 text-green-500" />
             </button>
             <button 
               className="p-1.5 rounded-full text-yellow-500 hover:bg-yellow-100"
-              title="Notify Patient"
+              title="Notify Customer"
             >
               <Bell className="w-4 h-4" />
             </button>

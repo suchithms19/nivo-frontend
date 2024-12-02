@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
-import ComingSoon from "../components/ComingSoon";
+import { BookingView } from "../components/BookingView";
 
 export function Bookings() {
   return (
@@ -11,7 +11,7 @@ export function Bookings() {
 
       
       <div className="w-5/6 ml-[16.66%] px-4">
-        <ComingSoon/>
+        <BookingView/>
       </div>
     </div>
   );
