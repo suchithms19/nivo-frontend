@@ -11,9 +11,13 @@ import { Settings } from './pages/Settings';
 import { Upgrade } from './pages/Upgrade';
 import LandingPage from './pages/LandingPage';
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
-import SelfAdd from './components/SelfAdd';
+import SelfAddWait from './components/SelfAddWait';
 import WaitlistConfirmation from './pages/WaitlistConfirmation';
 import ViewWaitlist from './pages/ViewWaitlist';
+import SelfAddBook from './components/SelfAddBook';
+import ThankYouBook from './components/ThankYouBook';
+import AddBooking from './components/AddBooking';
+import { Bookings } from './pages/Bookings';
 
 function App() {
   return (
@@ -24,9 +28,11 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/selfadd/:businessName" element={<SelfAdd />} />
+          <Route path="/selfadd/:businessName" element={<SelfAddWait />} />
           <Route path="/thankyou" element={<WaitlistConfirmation />} />
           <Route path="/view-waitlist/:userId" element={<ViewWaitlist/>} />
+          <Route path="/book/:businessName" element={<SelfAddBook />} />
+          <Route path="/thankyou-book" element={<ThankYouBook />} />
 
           {/* Protected routes */}
           <Route 
@@ -70,6 +76,14 @@ function App() {
             } 
           />
           <Route 
+            path="/bookings" 
+            element={
+              <PrivateRoute>
+                <Bookings />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
             path="/analytics" 
             element={
               <PrivateRoute>
@@ -90,6 +104,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Settings />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/add-booking" 
+            element={
+              <PrivateRoute>
+                <AddBooking />
               </PrivateRoute>
             } 
           />

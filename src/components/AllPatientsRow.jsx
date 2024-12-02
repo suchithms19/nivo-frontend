@@ -6,7 +6,9 @@ const AllPatientRow = ({ patient }) => {
       <div className="flex items-center justify-between ">
         <div className="flex-1 min-w-0">
           <div className="text-sm font-medium text-gray-900 capitalize">
-            {patient.name} {patient.selfRegistered && <span className="text-xs text-cuspurple">(Self-Reg)</span>}
+            {patient.name} {patient.selfRegistered && <span className="text-xs text-cuspurple bg-purple-50 px-2 py-0.5 rounded-full">
+                  Self-Reg
+                </span>}
           </div>
         </div>
         <div className="flex-1 min-w-0">
@@ -21,7 +23,7 @@ const AllPatientRow = ({ patient }) => {
         <div className="flex-1 min-w-0 ">
           <div className="text-sm ">
             {patient.canceled ? (
-              <span className="text-red-500">Canceled {patient.selfCanceled && <span className="text-xs text-red-500">(Self-Can)</span>} </span>
+              <span className="text-red-500">Canceled {patient.selfCanceled && <span className="text-xs text-red-500 bg-red-100 px-2 py-0.5 rounded-full font-medium">Self-Can</span>} </span>
             ) : (
               <TimeDifference entryTime={patient.entryTime} exitTime={patient.postConsultation}/>
             )}

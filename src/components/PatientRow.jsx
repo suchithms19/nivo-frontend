@@ -69,61 +69,85 @@ const PatientRow = ({ patient, section }) => {
   };
 
   return (
-    <div className="my-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 cursor-pointer transform ">
-      <div className="flex items-center justify-between">
-        <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium text-gray-900 capitalize">
-            {patient.name} {patient.selfRegistered && <span className="text-xs text-cuspurple">(Self-Reg)</span>}
+    <div className="my-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 cursor-pointer transform">
+      <div className="flex flex-col">
+        {/* Top Section - Name and Actions */}
+        <div className="flex justify-between items-start">
+          <div>
+            <div className="flex items-center gap-2 mb-0.5">
+              <h3 className="text-base font-medium text-gray-900 capitalize">
+                {patient.name}
+              </h3>
+              {patient.selfRegistered && (
+                <span className="text-xs text-cuspurple bg-purple-50 px-2 py-0.5 rounded-full">
+                  Self-Reg
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-gray-500">
+              +91 {patient.phoneNumber}
+            </p>
           </div>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-sm ">+91 {patient.phoneNumber}</div>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-sm">
-            {section === 'waitlist' ? <RealTimeWaitTime entryTime={patient.entryTime} /> : <RealTimeWaitTime entryTime={patient.postConsultation} />}
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={section === 'waitlist' ? changeWaittoServe : changeServetoComplete}
-            className="p-2 rounded-full hover:bg-green-100 transition-colors duration-200"
-          >
-            <Check className="w-5 h-5 text-green-500" />
-          </button>
-          <button className="p-2 rounded-full text-yellow-500 hover:bg-yellow-100">
-            <Bell size={19} />
-          </button>
-          {section === 'waitlist' && (
+
+          <div className="flex items-center gap-1.5">
             <button 
-              onClick={() => setShowConfirm(true)}
-              className="p-2 rounded-full text-red-500 hover:bg-red-100"
+              onClick={section === 'waitlist' ? changeWaittoServe : changeServetoComplete}
+              className="p-1.5 rounded-full hover:bg-green-100 transition-colors duration-200"
+              title={section === 'waitlist' ? 'Move to Serving' : 'Complete'}
             >
-              <Trash2 size={19} />
+              <Check className="w-4 h-4 text-green-500" />
             </button>
-          )}
+            <button 
+              className="p-1.5 rounded-full text-yellow-500 hover:bg-yellow-100"
+              title="Notify Patient"
+            >
+              <Bell className="w-4 h-4" />
+            </button>
+            {section === 'waitlist' && (
+              <button 
+                onClick={() => setShowConfirm(true)}
+                className="p-1.5 rounded-full text-red-500 hover:bg-red-100"
+                title="Cancel Patient"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom Section - Time */}
+        <div className="mt-2 text-xs font-medium text-gray-500">
+          {section === 'waitlist' ? 'Waiting: ' : 'Serving: '}
+          <span className="text-gray-500">
+            <RealTimeWaitTime entryTime={
+              section === 'waitlist' ? patient.entryTime : patient.postConsultation
+            } />
+          </span>
         </div>
       </div>
 
+      {/* Confirmation Modal */}
       {showConfirm && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="mb-4">Are you sure you want to cancel this patient?</p>
-            <button
-              onClick={() => {
-                cancelPatient();
-                setShowConfirm(false);
-              }}
-              className="bg-red-500 text-white py-2 px-4 rounded-lg mr-2 hover:scale-105"
-            >
-              Yes
-            </button>
-            <button
-              onClick={() => setShowConfirm(false)}
-              className="bg-gray-300 text-gray-900 py-2 px-4 rounded-lg hover:scale-105"
-            >
-              No
-            </button>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors duration-200"
+              >
+                No, Keep
+              </button>
+              <button
+                onClick={() => {
+                  cancelPatient();
+                  setShowConfirm(false);
+                }}
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-200"
+              >
+                Yes, Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

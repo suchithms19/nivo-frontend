@@ -150,4 +150,50 @@ const useQueueStatus = (userId) => {
   return { queueStatus, loading, error };
 };
 
-export {getServelist,getWaitlist,getAllPatient,useWaitlist,useQueueStatus};
+const getTodayBookings = () => {
+  const [bookings, setBookings] = useState([]);
+  const [loadingBookings, setLoadingBookings] = useState(true);
+  const [errorBookings, setErrorBookings] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    
+    const fetchBookings = async () => {
+      try {
+        setLoadingBookings(true);
+        // Get today's date at midnight
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const response = await axios.get(
+          `${BACKEND_URL}/api/v1/appointment/today-bookings`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        
+        // Sort bookings by time
+        const sortedBookings = response.data.sort((a, b) => 
+          new Date(a.startTime) - new Date(b.startTime)
+        );
+        
+        setBookings(sortedBookings);
+      } catch (err) {
+        setErrorBookings(err.message);
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
+
+    fetchBookings();
+    const interval = setInterval(fetchBookings, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return { bookings, loadingBookings, errorBookings };
+};
+
+export {getServelist,getWaitlist,getAllPatient,useWaitlist,useQueueStatus,getTodayBookings};

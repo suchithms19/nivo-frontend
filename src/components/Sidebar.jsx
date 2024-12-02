@@ -19,6 +19,7 @@ export function Sidebar(){
         <ButtonSide label="Waitlist" route="/waitlist" />
         <ButtonSide label="Messages"  route="/messages" badge="0"/>
         {/* <ButtonSide label="Resources"  route="/resources" /> */}
+        <ButtonSide label="Bookings"  route="/bookings" />
         <ButtonSide label="Customers"  route="/customers" />
         {/* <ButtonSide label="Analytics" route="/analytics" /> */}
         <ButtonSide label="Upgrade"  route="/upgrade" />

@@ -1,21 +1,62 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PatientRow from './PatientRow';
-import {getWaitlist,getServelist} from '../hooks';
+import BookingRow from './BookingRow';
+import { getWaitlist, getServelist, getTodayBookings } from '../hooks';
 import { useNavigate } from 'react-router-dom';
+import { Calendar } from 'lucide-react';
 
 const PatientList = () => {
-  const { data, loading, error } =getWaitlist();
-  const { datas, loadings, errors } =getServelist();
+  const { data, loading, error } = getWaitlist();
+  const { datas, loadings, errors } = getServelist();
+  const { bookings, loadingBookings, errorBookings } = getTodayBookings();
   const navigate = useNavigate();
 
-  function onClick(){
-    navigate('/addcustomer')
+  function onClick() {
+    navigate('/addcustomer');
+  }
+
+  function onBookingClick() {
+    navigate('/add-booking');
   }
 
   return (
     <div className="bg-gray-100 min-h-screen h-max">
-      <div className="max-w-7xl mx-auto overflow-x-auto">
-        <div className="flex gap-4">
+      <div className="max-w-7xl mx-auto overflow-x-auto p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Today's Bookings Section */}
+          <div className="bg-white rounded-lg shadow-sm mb-8">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-semibold">Today's Bookings</h2>
+                  <div className="text-sm text-gray-500 mt-1">
+                    <span className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-1" />
+                      {`${bookings.length} bookings`}
+                    </span>
+                  </div>
+                </div>
+                <button 
+                  onClick={onBookingClick}
+                  className="bg-cuspurple text-white px-4 py-2 rounded-md hover:scale-105 transition duration-150 ease-in-out flex items-center gap-2"
+                >
+                  <Calendar className="w-4 h-4" />
+                  Add Booking
+                </button>
+              </div>
+            </div>
+            <div className="px-6">
+              {bookings.map((booking) => (
+                <BookingRow key={booking._id} booking={booking} />
+              ))}
+              {bookings.length === 0 && (
+                <div className="text-center py-6 text-gray-500">
+                  No bookings for today
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Waitlist Section */}
           <div className="bg-white rounded-lg shadow-sm mb-8 flex-1">
             <div className="px-6 py-4 border-b border-gray-200">
@@ -37,21 +78,8 @@ const PatientList = () => {
               </div>
             </div>
             <div className="px-6">
-              {/* Waitlist Headers */}
-              <div className="my-3 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-500">NAME</div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-500">&nbsp; PHONE</div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-500">&nbsp; &nbsp;TIME WAITED</div>
-                  </div>
-                  <div className="w-24"></div>
-                </div>
-              </div>
+              
+              
               { (
                 data.map((item) => (
                   <PatientRow key={item._id} patient={item.patient} section="waitlist" />
@@ -74,21 +102,8 @@ const PatientList = () => {
               </div>
             </div>
             <div className="px-6">
-              {/* Serving Headers */}
-              <div className="my-3 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-500">NAME</div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-500">&nbsp;PHONE</div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-500">&nbsp; &nbsp;SERVING TIME</div>
-                  </div>
-                  <div className="w-24"></div>
-                </div>
-              </div>
+              
+              
               { (
                 datas.map((item) => (
                   <PatientRow key={item._id} patient={item.patient} section="serving" />

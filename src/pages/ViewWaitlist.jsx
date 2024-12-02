@@ -52,7 +52,7 @@ const ViewWaitlist = () => {
               {waitlist.map((entry, index) => (
                 <li key={entry._id} className="py-4 flex items-center justify-between">
                   <span className="text-gray-900">{index + 1}. {entry.patient.name}</span>
-                  {/* <span className="text-gray-600 text-sm">{new Date(entry.createdAt).toLocaleString()}</span> */}
+                  <span className="text-gray-600 text-sm">{new Date(entry.createdAt).toLocaleString()}</span>
                 </li>
               ))}
             </ul>

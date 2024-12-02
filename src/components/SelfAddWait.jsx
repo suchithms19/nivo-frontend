@@ -4,7 +4,7 @@ import BACKEND_URL from '../config';
 import { InputField } from './AddCustomerForm';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const SelfAdd = () => {
+const SelfAddWait = () => {
   const navigate = useNavigate();
   const { businessName } = useParams();
   const [user, setUser] = useState(null);
@@ -90,4 +90,4 @@ const SelfAdd = () => {
   );
 };
 
-export default SelfAdd;
+export default SelfAddWait;
