@@ -1,55 +1,60 @@
 import AllPatientRow from './AllPatientsRow';
 import { getAllPatient } from '../hooks';
+import { User } from 'lucide-react';
 
 const AllPatientList = () => {
   const { dataall, loadingall, errorall } = getAllPatient();
 
+  if (loadingall) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-gray-600">Loading patients...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-gray-100 min-h-screen h-max">
-      <div className="max-w-6xl mx-auto overflow-x-auto">
-        <div className="bg-white rounded-lg shadow-sm mb-8 mt-8">
+    <div className="bg-gray-100 min-h-screen h-max p-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-lg shadow-sm">
+          {/* Header */}
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-xl font-semibold">Customer List</h2>
+                <h2 className="text-xl font-semibold">Waitlist Overview</h2>
                 <div className="flex items-center text-sm text-gray-500 mt-1">
-                  <span className="flex items-center mr-4">
-                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-                    </svg>
-                    { `${dataall.length} persons`}
-                  </span>
+                  <User className="w-4 h-4 mr-1" />
+                  {`${dataall.length} total customers`}
                 </div>
               </div>
             </div>
           </div>
-          <div className="px-6">
-            <div className="my-3 p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs font-medium text-gray-500">NAME</div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs font-medium text-gray-500">PHONE NUMBER</div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs font-medium text-gray-500">AGE</div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs font-medium text-gray-500">ENTRY TIME</div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs font-medium text-gray-500">TOTAL TIME WAITED</div>
-                </div>
+
+          {/* Table Headers */}
+          <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+            <div className="flex items-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div className="w-1/4 pr-8">Name</div>
+              <div className="w-1/5 pr-8">Phone Number</div>
+              <div className="w-1/12 pr-8">Age</div>
+              <div className="w-1/5 pr-8">Entry Time</div>
+              <div className="w-1/5">Time Waited</div>
+            </div>
+          </div>
+
+          {/* Patient List */}
+          <div className="divide-y divide-gray-100">
+            {dataall.length > 0 ? (
+              dataall.map((item) => (
+                <AllPatientRow 
+                  key={item._id} 
+                  patient={item.patient}
+                />
+              ))
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                No customers found
               </div>
-            </div>
-            <div className="patient-list pb-2">
-              {(
-                dataall.map((item) => (
-                  <AllPatientRow key={item._id} patient={item.patient} section="waitlist" />
-                ))
-              )}
-            </div>
+            )}
           </div>
         </div>
       </div>

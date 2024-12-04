@@ -16,12 +16,12 @@ export function Sidebar(){
           <div className="font-semibold text-xl">Nivo</div>
       </div>
       <div className="flex flex-col justify-center items-center mt-6">
-        <ButtonSide label="Waitlist" route="/waitlist" />
+        <ButtonSide label="Dashboard" route="/waitlist" />
         <ButtonSide label="Messages"  route="/messages" badge="0"/>
         {/* <ButtonSide label="Resources"  route="/resources" /> */}
         <ButtonSide label="Bookings"  route="/bookings" />
-        <ButtonSide label="Customers"  route="/customers" />
-        {/* <ButtonSide label="Analytics" route="/analytics" /> */}
+        <ButtonSide label="Waitlist"  route="/customers" />
+        <ButtonSide label="Analytics" route="/analytics" />
         <ButtonSide label="Upgrade"  route="/upgrade" />
         <ButtonSide label="Settings"  route="/settings" />
       </div>

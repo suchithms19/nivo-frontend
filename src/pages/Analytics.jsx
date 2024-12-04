@@ -1,6 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
-import ComingSoon from "../components/ComingSoon";
-
+import { AnalyticsUser } from "../components/AnalyticsUser";
 export function Analytics() {
   return (
     <div className="flex w-full">
@@ -11,7 +10,7 @@ export function Analytics() {
 
       
       <div className="w-5/6 ml-[16.66%] px-4">
-        <ComingSoon/>
+        <AnalyticsUser/>
       </div>
     </div>
   );

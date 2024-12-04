@@ -134,7 +134,7 @@ const PatientRow = ({ patient, section }) => {
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors duration-200"
+                className="bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:scale-105 "
               >
                 No, Keep
               </button>
@@ -143,7 +143,7 @@ const PatientRow = ({ patient, section }) => {
                   cancelPatient();
                   setShowConfirm(false);
                 }}
-                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-200"
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:scale-105  "
               >
                 Yes, Cancel
               </button>

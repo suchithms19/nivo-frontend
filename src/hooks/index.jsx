@@ -161,7 +161,6 @@ const getTodayBookings = () => {
     const fetchBookings = async () => {
       try {
         setLoadingBookings(true);
-        // Get today's date at midnight
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
@@ -174,12 +173,12 @@ const getTodayBookings = () => {
           }
         );
         
-        // Sort bookings by time
-        const sortedBookings = response.data.sort((a, b) => 
-          new Date(a.startTime) - new Date(b.startTime)
-        );
+        // Filter only scheduled bookings and sort by time
+        const scheduledBookings = response.data
+          .filter(booking => booking.status === 'scheduled')
+          .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
         
-        setBookings(sortedBookings);
+        setBookings(scheduledBookings);
       } catch (err) {
         setErrorBookings(err.message);
       } finally {

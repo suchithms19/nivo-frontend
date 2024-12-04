@@ -80,9 +80,9 @@ const ThankYouBook = () => {
         </div>
 
         <div className="space-y-4">
-          <p className="text-sm text-gray-600">
+          {/* <p className="text-sm text-gray-600">
             Please arrive 5-10 minutes before your scheduled booking time.
-          </p>
+          </p> */}
           <div className="border-t pt-4">
             <button
               onClick={() => window.location.href = '/'}

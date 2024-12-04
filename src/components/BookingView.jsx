@@ -20,8 +20,9 @@ export function BookingView() {
           }
         );
 
-        // Group appointments by date and time
-        const grouped = response.data.reduce((acc, appointment) => {
+        // Create a structured object for appointments
+        const grouped = {};
+        response.data.forEach(appointment => {
           const date = new Date(appointment.startTime).toDateString();
           const time = new Date(appointment.startTime).toLocaleTimeString('en-US', {
             hour: '2-digit',
@@ -29,12 +30,14 @@ export function BookingView() {
             hour12: false
           });
           
-          if (!acc[date]) {
-            acc[date] = {};
+          if (!grouped[date]) {
+            grouped[date] = {};
           }
-          acc[date][time] = appointment;
-          return acc;
-        }, {});
+          if (!grouped[date][time]) {
+            grouped[date][time] = [];
+          }
+          grouped[date][time].push(appointment);
+        });
 
         setAppointments(grouped);
       } catch (err) {
@@ -102,6 +105,17 @@ export function BookingView() {
     });
   };
 
+  // Helper function to get appointments for a specific time slot
+  const getAppointmentsForTimeSlot = (date, time) => {
+    if (!appointments[date]?.[time]) return [];
+    
+    return appointments[date][time].sort((a, b) => {
+      if (a.status === 'scheduled' && b.status !== 'scheduled') return -1;
+      if (a.status !== 'scheduled' && b.status === 'scheduled') return 1;
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+  };
+
   if (loading) return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="text-gray-600">Loading appointments...</div>
@@ -146,7 +160,7 @@ export function BookingView() {
           {/* Timeline View */}
           <div className="grid grid-cols-[auto,1fr,1fr,1fr] gap-4">
             {/* Time slots column */}
-            <div className="pt-14"> {/* Offset for date headers */}
+            <div className="pt-14">
               {timeSlots.map(time => (
                 <div key={time} className="h-16 flex items-center justify-end pr-4 text-sm text-gray-500">
                   {formatDisplayTime(time)}
@@ -164,27 +178,53 @@ export function BookingView() {
                       {formatDate(date)}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {Object.keys(appointments[date.toDateString()] || {}).length} bookings
+                      {Object.values(appointments[date.toDateString()] || {})
+                        .flat()
+                        .length} bookings
                     </div>
                   </div>
                 </div>
 
                 {/* Time slots */}
                 {timeSlots.map(time => {
-                  const appointment = appointments[date.toDateString()]?.[time];
+                  const appointmentsAtTime = getAppointmentsForTimeSlot(date.toDateString(), time);
+
                   return (
                     <div 
                       key={`${date.toDateString()}-${time}`} 
                       className="h-16 border-l-2 border-gray-100 pl-2"
                     >
-                      {appointment ? (
-                        <div className="h-14 border-2 border-gray-100  rounded-lg p-2 text-xs">
-                          <div className="font-medium text-gray-900">
-                            {appointment.patientId.name}
-                          </div>
-                          <div className="text-gray-500">
-                            +91 {appointment.patientId.phoneNumber}
-                          </div>
+                      {appointmentsAtTime.length > 0 ? (
+                        <div className="h-14 flex gap-1 overflow-hidden relative">
+                          {appointmentsAtTime.slice(0, 3).map((appointment, index) => (
+                            <div 
+                              key={appointment._id}
+                              className={`flex-1 p-2 text-xs rounded-lg border ${
+                                appointment.status === 'scheduled'
+                                  ? 'bg-purple-50 border-purple-100'
+                                  : appointment.status === 'completed'
+                                  ? 'bg-green-50 border-green-100'
+                                  : 'bg-red-50 border-red-100'
+                              }`}
+                            >
+                              <div className="font-medium text-gray-900 flex items-center gap-1">
+                                {appointment.patientId.name}
+                                {/* {appointment.status !== 'scheduled' && (
+                                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100">
+                                    {appointment.status}
+                                  </span>
+                                )} */}
+                              </div>
+                              <div className="text-gray-500">
+                                +91 {appointment.patientId.phoneNumber}
+                              </div>
+                            </div>
+                          ))}
+                          {appointmentsAtTime.length > 3 && (
+                            <div className="absolute right-0 top-3 -translate-y-1/2 text-xs text-gray-500">
+                              +{appointmentsAtTime.length - 3} 
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div className="h-14 border border-dashed border-gray-200 rounded-lg"></div>
