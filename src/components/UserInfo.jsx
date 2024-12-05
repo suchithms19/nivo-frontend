@@ -81,8 +81,8 @@ const UserInfo = () => {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="loader"></div>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-gray-600">Loading settings...</div>
       </div>
     );
   }
