@@ -87,9 +87,9 @@ const UserInfo = () => {
     );
   }
 
-  const waitlistUrl = `getnivo.tech/selfadd/${user.businessNameForUrl}`;
-  const bookingUrl = `getnivo.tech/book/${user.businessNameForUrl}`;
-  const viewWaitlistUrl = `getnivo.tech/view-waitlist/${user._id}`;
+  const waitlistUrl = `localhost:5173/selfadd/${user.businessNameForUrl}`;
+  const bookingUrl = `localhost:5173/book/${user.businessNameForUrl}`;
+  const viewWaitlistUrl = `localhost:5173/view-waitlist/${user._id}`;
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
