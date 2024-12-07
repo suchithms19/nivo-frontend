@@ -25,6 +25,7 @@ const SelfAddBook = () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/v1/user/get-user-by-business/${businessName}`);
         setUser(response.data);
+        // Business hours will be available in response.data.businessHours
       } catch (err) {
         console.error('Error fetching user:', err);
         setError('Invalid business URL or business not found.');

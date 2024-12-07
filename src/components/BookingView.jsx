@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BACKEND_URL from '../config';
 import { Calendar, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { getUser } from '../hooks';
 
 export function BookingView() {
   const [appointments, setAppointments] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dateIndex, setDateIndex] = useState(0);
+  const { user, loadingUser } = getUser();
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -70,7 +72,10 @@ export function BookingView() {
   // Generate all possible time slots
   const getTimeSlots = () => {
     const slots = [];
-    for (let hour = 9; hour < 17; hour++) {
+    const startHour = user?.businessHours?.startHour || 9;
+    const endHour = user?.businessHours?.endHour || 17;
+    
+    for (let hour = startHour; hour < endHour; hour++) {
       for (let minute of [0, 30]) {
         slots.push(
           `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
@@ -116,7 +121,7 @@ export function BookingView() {
     });
   };
 
-  if (loading) return (
+  if (loading || loadingUser) return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="text-gray-600">Loading bookings...</div>
     </div>

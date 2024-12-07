@@ -195,4 +195,35 @@ const getTodayBookings = () => {
   return { bookings, loadingBookings, errorBookings };
 };
 
-export {getServelist,getWaitlist,getAllPatient,useWaitlist,useQueueStatus,getTodayBookings};
+const getUser = () => {
+  const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [errorUser, setErrorUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        setLoadingUser(true);
+        const response = await axios.get(
+          `${BACKEND_URL}/api/v1/user/profile`,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+        setUser(response.data);
+      } catch (err) {
+        console.error('Error fetching user:', err);
+        setErrorUser('Failed to fetch user data');
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  return { user, loadingUser, errorUser };
+};
+
+export {getServelist,getWaitlist,getAllPatient,useWaitlist,useQueueStatus,getTodayBookings,getUser};
