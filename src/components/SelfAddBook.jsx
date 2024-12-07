@@ -43,9 +43,17 @@ const SelfAddBook = () => {
       try {
         const dateToFetch = new Date(selectedDate);
         dateToFetch.setHours(0, 0, 0, 0);
+        
+        // Convert to IST midnight
+        const istDate = new Date(dateToFetch.toLocaleString('en-US', {
+          timeZone: 'Asia/Kolkata'
+        }));
+        
+        // Convert IST midnight back to UTC for API
+        const utcDate = new Date(istDate.getTime() - (istDate.getTimezoneOffset() * 60000));
 
         const response = await axios.get(
-          `${BACKEND_URL}/api/v1/appointment/available-slots/${user._id}/${dateToFetch.toISOString()}`
+          `${BACKEND_URL}/api/v1/appointment/available-slots/${user._id}/${utcDate.toISOString()}`
         );
         
         const sortedSlots = response.data.sort((a, b) => 
@@ -114,22 +122,27 @@ const SelfAddBook = () => {
   };
 
   const formatTime = (dateString) => {
-    return new Date(dateString).toLocaleTimeString('en-US', {
+    // Convert UTC to IST
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
+      timeZone: 'Asia/Kolkata'
     });
   };
 
   // Function to get today and next 4 days (excluding Sundays)
   const getAvailableDates = () => {
     const dates = [];
-    let currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Normalize current date
+    // Get current date in IST
+    const currentDate = new Date(new Date().toLocaleString('en-US', {
+      timeZone: 'Asia/Kolkata'
+    }));
+    currentDate.setHours(0, 0, 0, 0);
     
     while (dates.length < 5) {
-      // Skip Sundays
-      if (currentDate.getDay() !== 0) {
+      if (currentDate.getDay() !== 0) { // Skip Sundays
         dates.push(new Date(currentDate));
       }
       currentDate.setDate(currentDate.getDate() + 1);
@@ -149,14 +162,21 @@ const SelfAddBook = () => {
 
   // Custom date selection for DatePicker
   const isDateSelectable = (date) => {
+    // Convert to IST for comparison
+    const istDate = new Date(date.toLocaleString('en-US', {
+      timeZone: 'Asia/Kolkata'
+    }));
+    
     const availableDates = getAvailableDates();
     const lastAvailableDate = availableDates[availableDates.length - 1];
-    const today = new Date();
+    const today = new Date(new Date().toLocaleString('en-US', {
+      timeZone: 'Asia/Kolkata'
+    }));
     today.setHours(0, 0, 0, 0);
     
-    return date.getDay() !== 0 && // Not Sunday
-           date <= lastAvailableDate && // Not beyond 4 days
-           date >= today; // Not before today
+    return istDate.getDay() !== 0 && // Not Sunday
+           istDate <= lastAvailableDate && // Not beyond 4 days
+           istDate >= today; // Not before today
   };
 
   return (

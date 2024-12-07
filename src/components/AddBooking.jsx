@@ -27,15 +27,20 @@ const AddBooking = () => {
       }
 
       try {
-        // Get userId from token
         const decoded = jwtDecode(token);
         const userId = decoded.userId;
 
         const dateToFetch = new Date(selectedDate);
         dateToFetch.setHours(0, 0, 0, 0);
+        
+        const istDate = new Date(dateToFetch.toLocaleString('en-US', {
+          timeZone: 'Asia/Kolkata'
+        }));
+        
+        const utcDate = new Date(istDate.getTime() - (istDate.getTimezoneOffset() * 60000));
 
         const response = await axios.get(
-          `${BACKEND_URL}/api/v1/appointment/available-slots/${userId}/${dateToFetch.toISOString()}`,
+          `${BACKEND_URL}/api/v1/appointment/available-slots/${userId}/${utcDate.toISOString()}`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -93,7 +98,6 @@ const AddBooking = () => {
       console.error('Error booking appointment:', err);
       if (err.response?.status === 400) {
         setError(err.response.data.message);
-        // Refresh available slots
         const decoded = jwt_decode(token);
         const userId = decoded.userId;
         const slotsResponse = await axios.get(
@@ -113,21 +117,25 @@ const AddBooking = () => {
   };
 
   const formatTime = (dateString) => {
-    return new Date(dateString).toLocaleTimeString('en-US', {
+    const date = new Date(dateString);
+    
+    return date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
+      timeZone: 'Asia/Kolkata'
     });
   };
 
-  // Function to get today and next 4 days (excluding Sundays)
   const getAvailableDates = () => {
     const dates = [];
-    let currentDate = new Date();
+    const currentDate = new Date(new Date().toLocaleString('en-US', {
+      timeZone: 'Asia/Kolkata'
+    }));
     currentDate.setHours(0, 0, 0, 0);
     
     while (dates.length < 5) {
-      if (currentDate.getDay() !== 0) { // Skip Sundays
+      if (currentDate.getDay() !== 0) {
         dates.push(new Date(currentDate));
       }
       currentDate.setDate(currentDate.getDate() + 1);
