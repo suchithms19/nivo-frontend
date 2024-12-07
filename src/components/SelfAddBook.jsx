@@ -10,6 +10,7 @@ const SelfAddBook = () => {
   const navigate = useNavigate();
   const { businessName } = useParams();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -23,12 +24,14 @@ const SelfAddBook = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`${BACKEND_URL}/api/v1/user/get-user-by-business/${businessName}`);
         setUser(response.data);
-        // Business hours will be available in response.data.businessHours
       } catch (err) {
         console.error('Error fetching user:', err);
         setError('Invalid business URL or business not found.');
+      } finally {
+        setLoading(false);
       }
     };
     
@@ -179,6 +182,22 @@ const SelfAddBook = () => {
            istDate <= lastAvailableDate && // Not beyond 4 days
            istDate >= today; // Not before today
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error.includes('Invalid business URL')) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-red-500">Invalid business URL or business not found.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
