@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import editorDemo from '../assets/dash.png';
 import Dashboard from '../assets/dashboard.png';
-import Analytics from '../assets/analytics.jpg';
-
+import Analytics from '../assets/analytics.png';
+import Brand from '../assets/brand.png';
 
 const LandingPage = () => {
   
@@ -32,7 +32,7 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <main className="pt-20">
+      <main className="pt-20" id='demo'>
         <div className="relative">
           {/* Curved Background with Clouds */}
           <div className="absolute inset-0 z-0 overflow-hidden">
@@ -150,7 +150,7 @@ const LandingPage = () => {
       </div>
 
       {/* Feature Sections */}
-      <div className="space-y-20 sm:space-y-40 mb-20">
+      <div className="space-y-20 sm:space-y-40 mb-20" id='features'>
         {/* Feature 1 */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -159,19 +159,19 @@ const LandingPage = () => {
             </h2>
             <p className="mt-4 pb-6 sm:pb-10 max-w-2xl mx-auto text-base sm:text-xl text-gray-600">
               Efficiently manage appointments and walk-ins all in one place. 
-              Keep customers informed with real-time updates and reminders
+              Keep customers informed with real-time updates and reminders.
             </p>
             
             <div className="relative mt-10 sm:mt-20">
               <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden sm:block">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[533px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[539px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
                   <div className="cloud-1 absolute w-64 h-64 top-10 left-20 bg-white/40 rounded-full blur-3xl animate-cloud-drift"></div>
                   <div className="cloud-2 absolute w-72 h-72 top-40 right-20 bg-purple-100/50 rounded-full blur-3xl animate-cloud-drift-reverse"></div>
                   <div className="cloud-3 absolute w-56 h-56 bottom-20 left-40 bg-indigo-100/50 rounded-full blur-3xl animate-cloud-drift-slow"></div>
                 </div>
               </div>
               <div className="relative z-10 mt-6 sm:mt-10 max-w-4xl mx-auto">
-                <div className="rounded-xl overflow-hidden bg-white shadow-lg sm:shadow-none">
+                <div className="rounded-t-xl overflow-hidden bg-white shadow-lg sm:shadow-none">
                   <div className="flex items-center space-x-2 px-4 py-2 border-b border-gray-200 bg-gray-900">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -196,20 +196,20 @@ const LandingPage = () => {
             
             <div className="relative mt-10 sm:mt-20">
               <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden sm:block">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[533px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[537px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
                   <div className="cloud-1 absolute w-64 h-64 top-10 left-20 bg-white/40 rounded-full blur-3xl animate-cloud-drift"></div>
                   <div className="cloud-2 absolute w-72 h-72 top-40 right-20 bg-purple-100/50 rounded-full blur-3xl animate-cloud-drift-reverse"></div>
                   <div className="cloud-3 absolute w-56 h-56 bottom-20 left-40 bg-indigo-100/50 rounded-full blur-3xl animate-cloud-drift-slow"></div>
                 </div>
               </div>
               <div className="relative z-10 mt-6 sm:mt-10 max-w-4xl mx-auto">
-                <div className="rounded-xl overflow-hidden bg-white shadow-lg sm:shadow-none">
+                <div className="rounded-t-xl overflow-hidden bg-white shadow-lg sm:shadow-none">
                   <div className="flex items-center space-x-2 px-4 py-2 border-b border-gray-200 bg-gray-900">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  <img src={Dashboard} alt="Automated Notifications" className="w-full object-cover" />
+                  <img src={Brand} alt="Automated Notifications" className="w-full object-cover" />
                 </div>
               </div>
             </div>
@@ -228,14 +228,14 @@ const LandingPage = () => {
             
             <div className="relative mt-10 sm:mt-20">
               <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden sm:block">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[533px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[528px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
                   <div className="cloud-1 absolute w-64 h-64 bottom-10 left-20 bg-white/40 rounded-full blur-3xl animate-cloud-drift"></div>
                   <div className="cloud-2 absolute w-72 h-72 top-20 right-20 bg-purple-100/50 rounded-full blur-3xl animate-cloud-drift-reverse"></div>
                   <div className="cloud-3 absolute w-56 h-56 top-40 left-40 bg-indigo-100/50 rounded-full blur-3xl animate-cloud-drift-slow"></div>
                 </div>
               </div>
               <div className="relative z-10 mt-6 sm:mt-10 max-w-4xl mx-auto">
-                <div className="rounded-xl overflow-hidden bg-white shadow-lg sm:shadow-none">
+                <div className="rounded-t-xl overflow-hidden bg-white shadow-lg sm:shadow-none">
                   <div className="flex items-center space-x-2 px-4 py-2 border-b border-gray-200 bg-gray-900">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -297,15 +297,14 @@ const LandingPage = () => {
                 <span className="ml-3 text-xl font-bold text-gray-900">Nivo</span>
               </div>
               <p className="text-gray-600 text-sm">
-                Comprehensive crowd management software designed to enhance customer flow and reduce wait times.
-              </p>
+              Nivo improves customer experience with queue and scheduling management, helping businesses handle crowds and make data-driven decisions.              </p>
             </div>
             <div>
               <h3 className="text-gray-900 text-lg font-semibold mb-4">Product</h3>
               <ul className="space-y-3">
-                <li><a  className="text-gray-600 hover:text-gray-900 text-sm">Features</a></li>
+                <li><a href='#features'  className="text-gray-600 hover:text-gray-900 text-sm">Features</a></li>
                 <li><a  className="text-gray-600 hover:text-gray-900 text-sm">Pricing</a></li>
-                <li><a className="text-gray-600 hover:text-gray-900 text-sm">Demo</a></li>
+                <li><a href='#demo' className="text-gray-600 hover:text-gray-900 text-sm">Demo</a></li>
               </ul>
             </div>
             <div>
@@ -320,7 +319,7 @@ const LandingPage = () => {
               <h3 className="text-gray-900 text-lg font-semibold mb-4">Contact</h3>
               <div className="text-gray-600 text-sm flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
-                mssuchith@gmail.com
+                <a href="mailto:mssuchith@gmail.com">mssuchith@gmail.com</a>
               </div>
             </div>
           </div>
