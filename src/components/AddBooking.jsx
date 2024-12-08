@@ -5,7 +5,7 @@ import { InputField } from './AddCustomerForm';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import {jwtDecode } from 'jwt-decode';
-import { getUser } from '../hooks';  // Add this import
+import { getUser } from '../hooks'; 
 
 const AddBooking = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const AddBooking = () => {
     age: '',
   });
   const [error, setError] = useState('');
-  const { user, loadingUser } = getUser();  // Use the hook instead of local state
+  const { user, loadingUser } = getUser(); 
 
   useEffect(() => {
     const fetchAvailableSlots = async () => {
@@ -154,7 +154,7 @@ const AddBooking = () => {
     }).format(date);
   };
 
-  if (loadingUser) return (  // Add loading check if needed
+  if (loadingUser) return (  
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="text-gray-600">Loading...</div>
     </div>

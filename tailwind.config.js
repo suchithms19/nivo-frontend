@@ -49,6 +49,12 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "blob": "blob 7s infinite",
       },
+      blur: {
+        '3xl': '64px',
+      },
+      borderRadius: {
+        'curved': '100px',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

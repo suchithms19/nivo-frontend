@@ -69,18 +69,25 @@ export function BookingView() {
     return dates;
   };
 
-  // Generate all possible time slots
+  // Modified getTimeSlots function to handle minutes
   const getTimeSlots = () => {
     const slots = [];
     const startHour = user?.businessHours?.startHour || 9;
+    const startMinute = user?.businessHours?.startMinute || 0;
     const endHour = user?.businessHours?.endHour || 17;
+    const endMinute = user?.businessHours?.endMinute || 0;
     
-    for (let hour = startHour; hour < endHour; hour++) {
-      for (let minute of [0, 30]) {
-        slots.push(
-          `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
-        );
-      }
+    // Convert to minutes for easier calculation
+    const startTimeInMinutes = startHour * 60 + startMinute;
+    const endTimeInMinutes = endHour * 60 + endMinute;
+    
+    // Generate slots in 30-minute intervals
+    for (let timeInMinutes = startTimeInMinutes; timeInMinutes < endTimeInMinutes; timeInMinutes += 30) {
+      const hour = Math.floor(timeInMinutes / 60);
+      const minute = timeInMinutes % 60;
+      slots.push(
+        `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
+      );
     }
     return slots;
   };
@@ -106,7 +113,8 @@ export function BookingView() {
     return date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
+      timeZone: 'Asia/Kolkata'
     });
   };
 
