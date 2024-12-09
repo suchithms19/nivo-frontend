@@ -56,7 +56,7 @@ export function BookingView() {
   // Get all dates from Dec 1 to current date + 7 days
   const getAllDates = () => {
     const dates = [];
-    const startDate = new Date(new Date().getFullYear(), 11, 1); // December 1st
+    const startDate = new Date(new Date().getFullYear(), 11, 9); // December 9st
     const endDate = new Date();
     endDate.setDate(endDate.getDate() + 15); // Current date + 15 days
     

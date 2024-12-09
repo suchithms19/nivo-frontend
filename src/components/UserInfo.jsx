@@ -3,12 +3,21 @@ import axios from 'axios';
 import BACKEND_URL from '../config';
 import { QRCodeSVG } from 'qrcode.react';
 import ReactDOM from 'react-dom';
-import { Copy } from 'lucide-react';
+import { Copy, Clock, Save } from 'lucide-react';
 
 const UserInfo = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
   const [copiedLink, setCopiedLink] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [businessHours, setBusinessHours] = useState({
+    startHour: 9,
+    startMinute: 0,
+    endHour: 17,
+    endMinute: 0,
+    sundayOpen: false,
+    saturdayOpen: false
+  });
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -19,6 +28,7 @@ const UserInfo = () => {
           },
         });
         setUser(response.data);
+        setBusinessHours(response.data.businessHours);
       } catch (err) {
         setError('Failed to fetch user information');
       }
@@ -79,6 +89,143 @@ const UserInfo = () => {
     img.src = url;
   };
 
+  const handleBusinessHoursUpdate = async () => {
+    try {
+      const response = await axios.put(
+        `${BACKEND_URL}/api/v1/user/update-business-hours`,
+        { businessHours },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      
+      if (response.status === 200) {
+        setSuccessMessage('Business hours updated successfully!');
+        setTimeout(() => setSuccessMessage(''), 3000); // Clear message after 3 seconds
+      }
+    } catch (err) {
+      setError('Failed to update business hours');
+      setTimeout(() => setError(''), 3000);
+    }
+  };
+
+  const renderBusinessHoursSettings = () => {
+    return (
+      <div className="bg-gray-50 p-6 rounded-lg space-y-4">
+        <h3 className="font-semibold text-lg flex items-center gap-2">
+          <Clock size={20} />
+          Business Hours Settings
+        </h3>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Opening Time</label>
+            <div className="flex gap-2">
+              <select
+                value={businessHours.startHour}
+                onChange={(e) => setBusinessHours({
+                  ...businessHours,
+                  startHour: parseInt(e.target.value)
+                })}
+                className="rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+              >
+                {[...Array(24)].map((_, i) => (
+                  <option key={i} value={i}>{i.toString().padStart(2, '0')}:00</option>
+                ))}
+              </select>
+              <select
+                value={businessHours.startMinute}
+                onChange={(e) => setBusinessHours({
+                  ...businessHours,
+                  startMinute: parseInt(e.target.value)
+                })}
+                className="rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+              >
+                {[0, 30].map((minute) => (
+                  <option key={minute} value={minute}>{minute.toString().padStart(2, '0')}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Closing Time</label>
+            <div className="flex gap-2">
+              <select
+                value={businessHours.endHour}
+                onChange={(e) => setBusinessHours({
+                  ...businessHours,
+                  endHour: parseInt(e.target.value)
+                })}
+                className="rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+              >
+                {[...Array(24)].map((_, i) => (
+                  <option key={i} value={i}>{i.toString().padStart(2, '0')}:00</option>
+                ))}
+              </select>
+              <select
+                value={businessHours.endMinute}
+                onChange={(e) => setBusinessHours({
+                  ...businessHours,
+                  endMinute: parseInt(e.target.value)
+                })}
+                className="rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+              >
+                {[0, 30].map((minute) => (
+                  <option key={minute} value={minute}>{minute.toString().padStart(2, '0')}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-6 mt-4">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={businessHours.saturdayOpen}
+              onChange={(e) => setBusinessHours({
+                ...businessHours,
+                saturdayOpen: e.target.checked
+              })}
+              className="rounded text-purple-600 focus:ring-purple-500"
+            />
+            <span className="text-sm text-gray-700">Open on Saturday</span>
+          </label>
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={businessHours.sundayOpen}
+              onChange={(e) => setBusinessHours({
+                ...businessHours,
+                sundayOpen: e.target.checked
+              })}
+              className="rounded text-purple-600 focus:ring-purple-500"
+            />
+            <span className="text-sm text-gray-700">Open on Sunday</span>
+          </label>
+        </div>
+
+        <button
+          onClick={handleBusinessHoursUpdate}
+          className="mt-4 flex items-center gap-2 bg-cuspurple text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
+        >
+          <Save size={16} />
+          Save Business Hours
+        </button>
+
+        {successMessage && (
+          <div className="mt-2 text-green-600 text-sm">
+            {successMessage}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -95,6 +242,7 @@ const UserInfo = () => {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="bg-white shadow-md rounded-lg p-6 max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">Account Information</h2>
+        
         <div className="space-y-4">
           {/* Basic Info Grid */}
           <div className="grid grid-cols-3 gap-4 mb-6">
@@ -104,9 +252,6 @@ const UserInfo = () => {
             <div className="bg-gray-50 p-3 rounded-lg">
               <p className="text-gray-700 capitalize"><strong>Business Name:</strong> {user.businessName}</p>
             </div>
-            {/* <div className="bg-gray-50 p-3 rounded-lg">
-              <p className="text-gray-700"><strong>Total Customers:</strong> {user.totalPatients}</p>
-            </div> */}
           </div>
 
           {/* Links Grid */}
@@ -189,6 +334,9 @@ const UserInfo = () => {
               </div>
             </div>
           </div>
+
+          {/* Business Hours Settings - Now below QR codes */}
+          {renderBusinessHoursSettings()}
         </div>
       </div>
     </div>

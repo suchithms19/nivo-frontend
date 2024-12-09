@@ -3,7 +3,7 @@ import axios from 'axios';
 import BACKEND_URL from '../config';
 import { InputField } from './AddCustomerForm';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import {jwtDecode } from 'jwt-decode';
 import { getUser } from '../hooks'; 
 
@@ -19,6 +19,7 @@ const AddBooking = () => {
   });
   const [error, setError] = useState('');
   const { user, loadingUser } = getUser(); 
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchAvailableSlots = async () => {
@@ -72,10 +73,12 @@ const AddBooking = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
     const token = localStorage.getItem('token');
     
     if (!formData.name || !formData.phoneNumber || !selectedSlot) {
       setError('Name, phone number, and time slot are required.');
+      setIsSubmitting(false);
       return;
     }
     
@@ -115,6 +118,8 @@ const AddBooking = () => {
       } else {
         setError('Failed to book appointment. Please try again.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -137,7 +142,9 @@ const AddBooking = () => {
     currentDate.setHours(0, 0, 0, 0);
     
     while (dates.length < 5) {
-      if (currentDate.getDay() !== 0) {
+      const day = currentDate.getDay();
+      if ((day !== 0 || user?.businessHours?.sundayOpen) && 
+          (day !== 6 || user?.businessHours?.saturdayOpen)) {
         dates.push(new Date(currentDate));
       }
       currentDate.setDate(currentDate.getDate() + 1);
@@ -197,7 +204,7 @@ const AddBooking = () => {
               required 
             />
             <InputField 
-              label="Age" 
+              label="Age (optional)" 
               name="age" 
               value={formData.age} 
               onChange={handleChange} 
@@ -258,13 +265,20 @@ const AddBooking = () => {
             <button
               type="submit"
               className={`w-full py-2 px-4 rounded-md transition-all duration-200 ${
-                !selectedSlot 
+                !selectedSlot || isSubmitting
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-cuspurple hover:scale-105'
               } text-white`}
-              disabled={!selectedSlot}
+              disabled={!selectedSlot || isSubmitting}
             >
-              Book Appointment
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                  Booking...
+                </span>
+              ) : (
+                'Book Appointment'
+              )}
             </button>
           </form>
         </div>

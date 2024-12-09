@@ -5,6 +5,7 @@ import { InputField } from './AddCustomerForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { Loader2 } from 'lucide-react';
 
 const SelfAddBook = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const SelfAddBook = () => {
     age: '',
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -82,14 +84,17 @@ const SelfAddBook = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
     
     if (!user?._id) {
       setError('Business not found.');
+      setIsSubmitting(false);
       return;
     }
     
     if (!formData.name || !formData.phoneNumber || !selectedSlot) {
       setError('Name, phone number, and time slot are required.');
+      setIsSubmitting(false);
       return;
     }
     
@@ -122,6 +127,8 @@ const SelfAddBook = () => {
       } else {
         setError('Failed to book appointment. Please try again.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -139,14 +146,16 @@ const SelfAddBook = () => {
   // Function to get today and next 4 days (excluding Sundays)
   const getAvailableDates = () => {
     const dates = [];
-    // Get current date in IST
     const currentDate = new Date(new Date().toLocaleString('en-US', {
       timeZone: 'Asia/Kolkata'
     }));
     currentDate.setHours(0, 0, 0, 0);
     
     while (dates.length < 5) {
-      if (currentDate.getDay() !== 0) { // Skip Sundays
+      const day = currentDate.getDay();
+      // Check if the day is valid based on user settings
+      if ((day !== 0 || user?.businessHours?.sundayOpen) && 
+          (day !== 6 || user?.businessHours?.saturdayOpen)) {
         dates.push(new Date(currentDate));
       }
       currentDate.setDate(currentDate.getDate() + 1);
@@ -164,24 +173,7 @@ const SelfAddBook = () => {
     }).format(date);
   };
 
-  // Custom date selection for DatePicker
-  const isDateSelectable = (date) => {
-    // Convert to IST for comparison
-    const istDate = new Date(date.toLocaleString('en-US', {
-      timeZone: 'Asia/Kolkata'
-    }));
-    
-    const availableDates = getAvailableDates();
-    const lastAvailableDate = availableDates[availableDates.length - 1];
-    const today = new Date(new Date().toLocaleString('en-US', {
-      timeZone: 'Asia/Kolkata'
-    }));
-    today.setHours(0, 0, 0, 0);
-    
-    return istDate.getDay() !== 0 && // Not Sunday
-           istDate <= lastAvailableDate && // Not beyond 4 days
-           istDate >= today; // Not before today
-  };
+
 
   if (loading) {
     return (
@@ -213,7 +205,13 @@ const SelfAddBook = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <InputField label="Name" name="name" value={formData.name} onChange={handleChange} required />
             <InputField label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} type="tel" required />
-            <InputField label="Age" name="age" value={formData.age} onChange={handleChange} type="number" />
+            <InputField 
+              label="Age (optional)" 
+              name="age" 
+              value={formData.age} 
+              onChange={handleChange} 
+              type="number"
+            />
             
             {/* Date Selection */}
             <div className="mb-4">
@@ -269,13 +267,20 @@ const SelfAddBook = () => {
             <button
               type="submit"
               className={`w-full py-2 px-4 rounded-md transition-all duration-200 ${
-                !selectedSlot 
+                !selectedSlot || isSubmitting
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-cuspurple hover:scale-105'
               } text-white`}
-              disabled={!selectedSlot}
+              disabled={!selectedSlot || isSubmitting}
             >
-              Book Appointment
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                  Booking...
+                </span>
+              ) : (
+                'Book Appointment'
+              )}
             </button>
           </form>
         )}

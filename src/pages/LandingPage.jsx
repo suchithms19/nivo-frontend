@@ -32,10 +32,10 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <main className="pt-20" id='demo'>
+      <main className=" pt-20" id='demo'>
         <div className="relative">
           {/* Curved Background with Clouds */}
-          <div className="absolute inset-0 z-0 overflow-hidden">
+          <div className="absolute inset-0 z-0 overflow-hidden hidden md:block">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[624px] w-[96%] bg-gradient-to-b from-indigo-200 via-purple-200 to-purple-200 rounded-3xl overflow-hidden">
               {/* Floating Clouds */}
               <div className="cloud-1 absolute w-72 h-72 top-20 left-20 bg-purple-100/50 rounded-full blur-3xl animate-cloud-drift"></div>
@@ -51,7 +51,7 @@ const LandingPage = () => {
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                 <span className="block">Elevate customer experience and cut operational costs</span>
               </h1>
-              <p className="mt-3 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+              <p className="mt-6 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
                 Queue management and appointment scheduling system to manage crowd and optimize your business with data-driven decisions
               </p>
               <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8 gap-4">
@@ -74,7 +74,7 @@ const LandingPage = () => {
               </div>
 
               {/* Demo Image Section */}
-              <div className="mt-16 max-w-5xl mx-auto hidden sm:block">
+              <div className="mt-16 max-w-5xl mx-auto hidden md:block">
                 <div className="rounded-t-lg overflow-hidden bg-gray-900">
                   <div className="flex items-center space-x-2 px-4 py-2 border-b border-gray-800">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -94,7 +94,7 @@ const LandingPage = () => {
       </main>
 
       {/* Stats Section */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 mt-16 sm:mt-32 mb-20 sm:mb-40">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 mt-16 sm:mt-32 mb-20 sm:mb-40">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-2">
           {/* Stat 1 */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sm:border-none sm:shadow-none sm:bg-transparent">
@@ -163,7 +163,7 @@ const LandingPage = () => {
             </p>
             
             <div className="relative mt-10 sm:mt-20">
-              <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden sm:block">
+              <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden md:block">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[539px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
                   <div className="cloud-1 absolute w-64 h-64 top-10 left-20 bg-white/40 rounded-full blur-3xl animate-cloud-drift"></div>
                   <div className="cloud-2 absolute w-72 h-72 top-40 right-20 bg-purple-100/50 rounded-full blur-3xl animate-cloud-drift-reverse"></div>
@@ -177,7 +177,7 @@ const LandingPage = () => {
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  <img src={Dashboard} alt="Queue Management" className="w-full object-cover" />
+                  <img src={Dashboard} alt="Dashboard of nivo " className="w-full object-cover" />
                 </div>
               </div>
             </div>
@@ -195,7 +195,7 @@ const LandingPage = () => {
             </p>
             
             <div className="relative mt-10 sm:mt-20">
-              <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden sm:block">
+              <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden md:block">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[537px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
                   <div className="cloud-1 absolute w-64 h-64 top-10 left-20 bg-white/40 rounded-full blur-3xl animate-cloud-drift"></div>
                   <div className="cloud-2 absolute w-72 h-72 top-40 right-20 bg-purple-100/50 rounded-full blur-3xl animate-cloud-drift-reverse"></div>
@@ -209,7 +209,7 @@ const LandingPage = () => {
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  <img src={Brand} alt="Automated Notifications" className="w-full object-cover" />
+                  <img src={Brand} alt="Branded nivo page " className="w-full object-cover" />
                 </div>
               </div>
             </div>
@@ -227,7 +227,7 @@ const LandingPage = () => {
             </p>
             
             <div className="relative mt-10 sm:mt-20">
-              <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden sm:block">
+              <div className="absolute inset-0 -top-20 -bottom-20 z-0 overflow-hidden hidden md:block">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[528px] w-[90%] bg-gradient-to-b from-purple-200 via-indigo-200 to-purple-200 rounded-3xl overflow-hidden">
                   <div className="cloud-1 absolute w-64 h-64 bottom-10 left-20 bg-white/40 rounded-full blur-3xl animate-cloud-drift"></div>
                   <div className="cloud-2 absolute w-72 h-72 top-20 right-20 bg-purple-100/50 rounded-full blur-3xl animate-cloud-drift-reverse"></div>

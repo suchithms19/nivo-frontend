@@ -3,6 +3,7 @@ import axios from 'axios';
 import BACKEND_URL from '../config';
 import { InputField } from './AddCustomerForm';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 const SelfAddWait = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const SelfAddWait = () => {
     age: '',
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,14 +40,17 @@ const SelfAddWait = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
     
     if (!user?._id) {
       setError('Business not found.');
+      setIsSubmitting(false);
       return;
     }
     
     if (!formData.name || !formData.phoneNumber) {
       setError('Name and phone number are required.');
+      setIsSubmitting(false);
       return;
     }
     
@@ -56,6 +61,8 @@ const SelfAddWait = () => {
     } catch (err) {
       console.error('Error adding patient:', err);
       setError('Failed to add patient. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -73,12 +80,24 @@ const SelfAddWait = () => {
           <form onSubmit={handleSubmit}>
             <InputField label="Name" name="name" value={formData.name} onChange={handleChange} required />
             <InputField label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} type="tel" required />
-            <InputField label="Age" name="age" value={formData.age} onChange={handleChange} type="number" />   
+            <InputField label="Age (optional)" name="age" value={formData.age} onChange={handleChange} type="number"  />   
             <button
               type="submit"
-              className="w-full bg-cuspurple text-white py-2 px-4 rounded-md hover:scale-105"
+              className={`w-full py-2 px-4 rounded-md transition-all duration-200 ${
+                isSubmitting
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-cuspurple hover:scale-105'
+              } text-white`}
+              disabled={isSubmitting}
             >
-              Join Waitlist
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                  Joining...
+                </span>
+              ) : (
+                'Join Waitlist'
+              )}
             </button>
           </form>
         )}

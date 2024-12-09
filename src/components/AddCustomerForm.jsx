@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import BACKEND_URL from '../config';
 
@@ -14,6 +14,7 @@ const AddCustomerForm = () => {
     age: '',
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,6 +22,7 @@ const AddCustomerForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     setError('');
     
     try {
@@ -34,6 +36,8 @@ const AddCustomerForm = () => {
     } catch (err) {
       console.error('Error adding patient:', err);
       setError('Failed to add patient. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -57,8 +61,14 @@ const AddCustomerForm = () => {
         <form onSubmit={handleSubmit}>
           <InputField label="Name" name="name" value={formData.name} onChange={handleChange} />
           {/* <InputField label="Patient Id" name="patientId" value={formData.patientId} onChange={handleChange} /> */}
-          <InputField label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} type="tel" />
-          <InputField label="Age" name="age" value={formData.age} onChange={handleChange} type="number" />
+          <InputField label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} type="tel"  />
+          <InputField 
+            label="Age (optional)" 
+            name="age" 
+            value={formData.age} 
+            onChange={handleChange} 
+            type="number" 
+          />
           {/* <SelectField
             label="Doctor Type"
             name="doctorType"
@@ -75,9 +85,19 @@ const AddCustomerForm = () => {
           /> */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            disabled={isSubmitting}
+            className={`w-full py-2 px-4 rounded-md transition-all duration-200 
+              ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-cuspurple hover:scale-105'}
+              text-white`}
           >
-            Add Customer
+            {isSubmitting ? (
+              <span className="flex items-center justify-center">
+                <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                Submitting...
+              </span>
+            ) : (
+              'Add Customer'
+            )}
           </button>
         </form>
       </div>
